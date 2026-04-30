@@ -1,0 +1,54 @@
+name: Build & Run Tugas-1 (Java Restoran)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Pemrograman-Berbasis-Dekstop/**"
+      - ".github/workflows/java-tugas1.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "Pemrograman-Berbasis-Dekstop/**"
+      - ".github/workflows/java-tugas1.yml"
+  workflow_dispatch:
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Pemrograman-Berbasis-Dekstop
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Compile Tugas-1.java
+        run: javac Tugas-1.java
+
+      - name: Run skenario 1 - Tanpa diskon (total < Rp 50.000)
+        run: |
+          echo "=== Pesanan: 2x Nasi Pecel + 3x Air Mineral ==="
+          printf "1\n2\n5\n3\n0\n0\n" | java Main
+
+      - name: Run skenario 2 - BOGO minuman (total > Rp 50.000)
+        run: |
+          echo "=== Pesanan: 3x Nasi Pecel + 1x Kopi ==="
+          printf "1\n3\n7\n1\n0\n0\n" | java Main
+
+      - name: Run skenario 3 - Diskon 10% + BOGO (total > Rp 100.000)
+        run: |
+          echo "=== Pesanan: 4x Soto Daging + 2x Es Teh Manis ==="
+          printf "3\n4\n8\n2\n0\n0\n" | java Main
+
+      - name: Run skenario 4 - Pesanan 4 menu campuran
+        run: |
+          echo "=== Pesanan: 1x Ayam Bakar + 2x Soto Ayam + 2x Teh Panas + 1x Kopi ==="
+          printf "4\n1\n2\n2\n6\n2\n7\n1\n" | java Main
